@@ -17,11 +17,7 @@ enum Nat {
 fn add(a: Nat, b: Nat) -> Nat {
     match a {
         Nat::Z => b,
-        Nat::S(a_minus) =>
-            // We unbox `a_minus` before calling `add`, and then
-            // re-box the output of `add` so that we can wrap it
-            // in Nat::S.
-            Nat::S(Box::new(add(*a_minus,b))),
+        Nat::S(a_minus) => Nat::S(Box::new(add(*a_minus,b))),
     }
 }
 ```
