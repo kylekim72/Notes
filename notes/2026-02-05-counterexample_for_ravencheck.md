@@ -49,6 +49,43 @@ add(Z, S(Z)) = S(Z) (by add's definition)
 
 Done.
 ```
+2. `a = S(a_m) and b = Z`
+```
+LHS = add(S(S(a_m)), Z)
+add(S(S(a_m)), Z) = S(add(S(a_m), Z)) (by unrolling)
+
+RHS = add(S(a_m), S(Z))
+add(S(a_m), S(Z)) = S(add(a_m, S(Z))) (by unrolling)
+
+We can apply IH here(a: a_m, b = Z)
+IH: add(S(a), b) == add(a, S(b))
+
+Done.
+```
+3. `a = Z and b = S(b_m)`
+```
+LHS = add(S(Z), S(b_m))
+add(S(Z), S(b_m)) = S(add(Z, S(b_m))) (by unrolling)
+S(add(Z, S(b_m))) = S(S(b_m)) (by add's definition)
+
+RHS = add(Z, S(S(b_m)))
+add(Z, S(S(b_m))) = S(S(b_m)) (by add's definition)
+
+Done.
+```
+
+4. `a = S(a_m) and b = S(b_m)`
+
+LHS = add(S(S(a_m)), S(b_m))
+add(S(S(a_m)), S(b_m)) = S(add(S(a_m), S(b_m))) (by unrolling)
+
+RHS = add(S(a_m), S(S(b_m)))
+add(S(a_m), S(S(b_m))) = S(add(a_m, S(S(b_m)))) (by unrolling)
+
+We can apply IH here(a: a_m, b: S(b_m) = b) since those are smaller substrcture of IH.
+IH: add(S(a), b) == add(a, S(b))
+
+Done.
 
 ## TIP Benchmarks
 
