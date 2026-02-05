@@ -38,6 +38,18 @@ fn add_move_s() -> bool {
 
 In this section, I will write a manual proof for `add(S(a), b) == add(a, S(b))`. We need to check 4 cases, `a = Z and b = Z`(base case), `a = S(a_m) and b = Z`, `a = Z and b = S(b_m)`, and `a = S(a_m) and b = S(a_m)`. 
 
+1. `a = Z and b = Z`
+```
+LHS = add(S(Z), Z)
+add(S(Z), Z) = S(add(Z, Z)) (by unrolling)
+S(add(Z, Z)) = S(Z) (by add's definition)
+
+RHS = add(Z, S(Z))
+add(Z, S(Z)) = S(Z) (by add's definition)
+
+Done.
+```
+
 ## TIP Benchmarks
 
 Table 1 reflects several updates to our TIP benchmarks case study. First, we discovered a soundness bug in our implementation of multi-function inductive verification conditions. Fixing it meant adding a missing quantifier to the generated verification conditions, which increased the verification times of the following properties:
