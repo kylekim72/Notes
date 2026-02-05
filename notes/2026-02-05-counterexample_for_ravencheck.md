@@ -34,9 +34,9 @@ fn add_move_s() -> bool {
 }
 ```
 
-# Case Studies
+## Manual proof
 
-We have included the verified code of all three of our case studies in the supplementary material. This code will also be part of our artifact submission.
+In this section, I will write a manual proof for `add(S(a), b) == add(a, S(b))`. We need to check 4 cases, `a = Z and b = Z`(base case), `a = S(a_m) and b = Z`, `a = Z and b = S(b_m)`, and `a = S(a_m) and b = S(a_m)`. 
 
 ## TIP Benchmarks
 
