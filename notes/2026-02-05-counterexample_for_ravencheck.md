@@ -1,8 +1,28 @@
-We have implemented all changes that were requested, and that we described in the revision plan.
+In this note, I will talk about what Ravencheck outputs for counterexample currently(especially, for inductive verification such as TIP benchmarks), and how can we improve this into a more readable format. I will start with simple property that only requires 1 lemma to be proved.
 
-# Latexdiff
+# Problem description
 
-We needed to remove the code examples and graph images from the latexdiff in order for it to compile. It is otherwise complete.
+First, below is the definition of Nat type and add function that is defined recursively.
+
+
+```enum Nat {
+    // The zero variant
+    Z,
+    // The successor variant.
+    S(Box<Nat>)
+}
+#[define]
+#[recursive]
+fn add(a: Nat, b: Nat) -> Nat {
+    match a {
+        Nat::Z => b,
+        Nat::S(a_minus) =>
+            // We unbox `a_minus` before calling `add`, and then
+            // re-box the output of `add` so that we can wrap it
+            // in Nat::S.
+            Nat::S(Box::new(add(*a_minus,b))),
+    }
+}```
 
 # Case Studies
 
