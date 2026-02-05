@@ -5,7 +5,8 @@ In this note, I will talk about what Ravencheck outputs for counterexample curre
 First, below is the definition of Nat type and add function that is defined recursively.
 
 
-```enum Nat {
+```
+enum Nat {
     // The zero variant
     Z,
     // The successor variant.
@@ -22,7 +23,8 @@ fn add(a: Nat, b: Nat) -> Nat {
             // in Nat::S.
             Nat::S(Box::new(add(*a_minus,b))),
     }
-}```
+}
+```
 
 # Case Studies
 
