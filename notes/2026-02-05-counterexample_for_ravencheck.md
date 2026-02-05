@@ -1,6 +1,8 @@
+## Intro
+
 In this note, I will talk about what Ravencheck outputs for counterexample currently(especially, for inductive verification such as TIP benchmarks), and how can we improve this into a more readable format. I will start with simple property that only requires 1 lemma to be proved.
 
-# Problem description
+## Problem description
 
 First, below is the definition of Nat type and add function that is defined recursively.
 
@@ -19,6 +21,16 @@ fn add(a: Nat, b: Nat) -> Nat {
         Nat::Z => b,
         Nat::S(a_minus) => Nat::S(Box::new(add(*a_minus,b))),
     }
+}
+```
+
+Given the recursive definitions above, I want to prove `add(S(a), b) == add(a, S(b))`, which can be expressed as below.
+
+```
+#[annotate]
+#[inductive(a: Nat, b: Nat)]
+fn add_move_s() -> bool {
+    add(Nat::S(a), b) == add(a, Nat::S(b))
 }
 ```
 
