@@ -1,5 +1,11 @@
 ## Intro
 
+Currently, Ravencheck outputs only binary yes/no answers for verification conditions. We need a counterexample that gives useful information to user to succeed verification. In this note, we will focus on inductive problems.
+
+For complex inductive verification problems, just specifying verification conditions and recursive definitions is insufficient. It might require some intermediate lemmas to make a successful proof. In addition to this, Ravencheck has another problem: although all required lemmas are ready-to-go, it might not be used during verification due to instantiation problem. To ensure decidability and predictability, Ravencheck leverages relational abstraction and partial function semantics. Although these techniques allows us to stay in decidable & predictable world, it allows some terms to be undefined, which hinders the use of relevant lemmas. Therefore, we have 2 main problems: find missing lemmas & instantiations.
+
+Ideal soultion for these problems would be suggesting missing lemmas & instantiations(respectively), but it might be difficult to reach out there. Therefore, we suggest an alternative solutions for ideal solution. First, to find missing lemmas, we will show the final LHS and RHS when it fails for certain case. For example, let's say we want to prove `add(S(a), b) == add(a, S(b))` and it fails at a = Z and b = S(b_m) case. In this case, we want to show "In a = Z and b = S(b_m), verification fails and LHS is ... and RHS is ...". It will help to figure out what lemmas are missing. In addition to this, we also want to show what lemmas are used during verification process. If certain lemma is declared in code but not used in verification, we can infer that there is an instantiation problem.
+
 In this note, I will talk about what Ravencheck outputs for counterexample currently(especially, for inductive verification such as TIP benchmarks), and how can we improve this into a more readable format. I will start with simple property that only requires 1 lemma to be proved.
 
 ## Problem description
