@@ -25,3 +25,5 @@ In addition, for each valid subcase, it shows the lemmas that is used in each su
 2. Output raw model, and replace constants as much as I can(also sorts too)
 For example, if we see something linke `(= x UI_Nat!val!3), (= y UI_Nat!val!0), (= z UI_Nat!val!7)` in raw model, replace `UI_Nat!val!3` with `x`, `UI_Nat!val!0` with `y`, `UI_Nat!val!7` with `z`, respectively.
 In addition, we don't know what `UI_Nat` is. Replace the types used in raw model with the types in Rust code. In this case, we need to replace `UI_Nat` with `Nat`.
+
+The final goal of this task is to map this low-level variables(in SMT expressions) to high-level variables(in Rust code that user have written), but let's start with simple one.
