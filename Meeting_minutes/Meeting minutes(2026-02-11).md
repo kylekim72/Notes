@@ -12,11 +12,11 @@ fn add_z_right() -> bool {
     add(a, Nat::Z) == a
 }
 ```
-After verifying this lemma is valid, it will show like below
+After verifying this lemma is valid, Ravencheck will ouput like below
 ```
 SMT Axiom [add_z_right]: (forall ((x_a UI_Nat)) (forall ((xn_7 UI_Nat)) (or (= xn_7 x_a) (not (F_add____ x_a F_Nat__Z____ xn_7)))))
 ```
-In addition, for each valid subcase, it shows the lemmas that is used in that subcase.
+In addition, for each valid subcase, it shows the lemmas that is used in each subcase.
 
 ## To-do lists
 
