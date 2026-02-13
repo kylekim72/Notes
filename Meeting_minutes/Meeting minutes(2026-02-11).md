@@ -83,7 +83,7 @@ fn F_add____($x1, $x2, $x3) {
 
 Q: It seems like Ravencheck does not output any information of variables in the Rust code. For example, if I try to verify the property like `add(a,b) == add(b,a)`, nothing mentioned about `a` and `b` in raw model. `a` and `b` is quantifed by existential quantifier, so that might be the reason?
 
-3. I've implemented to dump the SMT query that Ravencheck throws to the SMT solver as `reproduce.smt2`. After Ravencheck's verification, user can directly interact with the solver such as `cvc5 reproduce.smt2` like below.
+3. I've implemented to dump the SMT query that Ravencheck throws to the SMT solver as `reproduce.smt2`. After Ravencheck's verification, user can directly interact with the solver such as `cvc5 reproduce.smt2` command like below.
 
 ```
 ➜  examples git:(main) ✗ cvc5 reproduce.smt2
