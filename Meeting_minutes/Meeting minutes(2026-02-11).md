@@ -59,7 +59,7 @@ it replaces SMT solver's types with the types in Rust code(in this case, UI_Nat 
 Raw model after type replace
 ((define-fun F_special_recursive____ () Bool false) (define-fun F_Nat__Z____ () Nat (as @Nat_0 Nat)) (define-fun F_Nat__S____ (($x1 Nat) ($x2 Nat)) Bool (or (and (= (as @Nat_4 Nat) $x1) (= (as @Nat_2 Nat) $x2)) (and (= (as @Nat_2 Nat) $x1) (= (as @Nat_1 Nat) $x2)) (and (= (as @Nat_3 Nat) $x1) (= (as @Nat_4 Nat) $x2)))) (define-fun F_substruct__Nat__ (($x1 Nat) ($x2 Nat)) Bool (and (not (and (= (as @Nat_1 Nat) $x1) (= (as @Nat_0 Nat) $x2))) (not (and (= (as @Nat_1 Nat) $x1) (= (as @Nat_2 Nat) $x2))) (not (and (= (as @Nat_4 Nat) $x1) (= (as @Nat_0 Nat) $x2))) (not (and (= (as @Nat_4 Nat) $x1) (= (as @Nat_3 Nat) $x2))) (not (and (= (as @Nat_3 Nat) $x1) (= (as @Nat_0 Nat) $x2))) (not (and (= (as @Nat_2 Nat) $x1) (= (as @Nat_0 Nat) $x2))) (not (and (= (as @Nat_2 Nat) $x1) (= (as @Nat_4 Nat) $x2))) (not (and (= (as @Nat_1 Nat) $x1) (= (as @Nat_4 Nat) $x2))) (not (and (= (as @Nat_2 Nat) $x1) (= (as @Nat_3 Nat) $x2))) (not (and (= (as @Nat_1 Nat) $x1) (= (as @Nat_3 Nat) $x2))))) (define-fun F_add____ (($x1 Nat) ($x2 Nat) ($x3 Nat)) Bool (or (and (= (as @Nat_2 Nat) $x1) (= (as @Nat_4 Nat) $x2) (= (as @Nat_4 Nat) $x3)) (and (= (as @Nat_3 Nat) $x1) (= (as @Nat_1 Nat) $x2) (= (as @Nat_3 Nat) $x3)))))
 ```
-In addition to this, it also outputs cleaned-up result to show the relations and interactions between those constants in model and relations.
+In addition to this, it also outputs cleaned-up result to show the relations and interactions between those constants and relations in the model.
 
 ```
 const F_special_recursive____ = false;
