@@ -4,7 +4,7 @@ Is there a difference between them in terms of expressiveness? For example, is t
 
 A: 
 
-2. Ivy uses EPR + relational abstraction as their background theory, and Ravencheck too(+ partial function semantics). Are there any particular advantages on using EPR? For example, is it easy to model some properties(safety, liveness, etc.) of Paxos, Raft, or any other distributed protocols?
+2. Ivy uses EPR + relational abstraction as their background theory, and Ravencheck too(+ partial function semantics). Are there any particular advantages of using EPR? For example, is it easy to model some properties(safety, liveness, etc.) of Paxos, Raft, or any other distributed protocols?
 
 A: 
 
