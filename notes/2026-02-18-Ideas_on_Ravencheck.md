@@ -47,7 +47,7 @@ add(a,b) = match a {
     }
 }
 ```
-It dives into match statements and compare the final ouput. In this casewe want to prove `S(add(a_m, b)) == S(add(b_m, a))` after unrolling.
+It dives into match statements and compare the final ouput. In this casewe want to prove `S(add(a_m, b)) == S(add(b_m, a))` after unrolling. While it is relatively simple to follow match statements in this case, if we are trying to prove more complex cases, it's quite annoying.
 
 
 ## Future directions
@@ -55,3 +55,5 @@ It dives into match statements and compare the final ouput. In this casewe want 
 1. Currently, Ravencheck requires users to find missing instantiations (e.g., adding let _ = ...) due to its underlying theory (EEPR, relational abstraction and partial function semantics). I believe that finding missing lemmas is a meaningful part of the proof process, but finding missing instantiations is just annoying and tedious. In the future, I want to completely eliminate this burden. I'm somewhat afraid that we might need to come up with different theories, but I'm open to exploring different theoretical foundations—even if it means sacrificing some automation or strict decidability—so that users can focus solely on the logic of the proof.
 
 2. Current verification process of Ravencheck is quite different from handwritten proofs. To verify complex properties, users often have to mentally follow the tool's mechanical steps, such as expanding every match case and unrolling recursion. This is difficult and not intuitive. I want to bridge this gap so that if a property makes sense in a high-level, handwritten proof, it should also be easily verifiable in Ravencheck without the user needing to trace low-level execution details.
+
+3. I know it's a big open problem, but I want to lower the manual efforts(e.g. finding inductive invariants, lemmas)during verification process. Ideally, the only thing we require to the user is propery specifying the property that you want to verify; user don't need to find inductive lemmas or invariants for verification.
