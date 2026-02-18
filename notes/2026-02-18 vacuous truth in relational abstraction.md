@@ -123,3 +123,27 @@ In SMT level, Ravencheck asks to CVC5 like below
 )
 (check-sat)
 ```
+
+Let's say we want to check whether `add_z_right()` is evaluated as false or true. Then, in SMT level, we can ask like below
+```
+(push 1)
+(assert (exists ((x_a UI_Nat) (xn_7 UI_Nat)) (F_add____ x_a F_Nat__Z____ xn_7)))
+(check-sat)
+(pop 1)
+```
+`(push 1)` and `(pop 1)` are the commands to check the condition between those with previous settings. Withoout these commands, the assertion will remain in the context and it might disturb checking other conditions. If the code above outputs SAT, it means this axiom is ready to use during the proof.
+
+## Some thoughts
+
+However, I feel like this is not an ideal way. One possible way to help the user could be suggesting instantiated terms for each axioms. For example, let's consider `add_z_right()` function below
+
+```
+#[annotate]
+#[inductive(a: Nat)]
+fn add_z_right() -> bool {
+    add(a, Nat::Z) == a
+}
+```
+
+If this axiom is only instantiated for `a`, we can't conclude `add(b, Z) == b`. If an user wants to use the fact `add(b, Z) == b`, the user needs to instantiate `add_z_right()` on b.
+
