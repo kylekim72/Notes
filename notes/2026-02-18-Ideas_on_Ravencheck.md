@@ -23,8 +23,9 @@ fn add_commutative() -> bool {
 ```
 
 Although I'm currently not familiar with other verification tools(e.g. F*), I'm sure that this is not iutuitive.
+It's not a research problem, but it is worth to fix this.
 
-3.(Not completed yet... need more complex example) The way of Ravencheck performs inductive verification is not intuitive. More specifically, it is quite different from the high-level pencil-and-paper proof. For example, let's try to prove commutativity of add. A definitions of add is below
+3. IMO, the way of Ravencheck performs inductive verification is not intuitive. More specifically, it is quite different from the high-level pencil-and-paper proof. For example, let's try to prove `sub(sub(i, j), k) == sub(i, add(j, k))`, TIP #9. A definitions of add and sub are below
 
 ```
 #[define]
@@ -35,19 +36,64 @@ fn add(a: Nat, b: Nat) -> Nat {
         Nat::S(a_minus) => Nat::S(Box::new(add(*a_minus,b))),
     }
 }
-```
-
-For the last subcase(a = S(a_m) and b = S(b_m)), Ravencheck behaves like below to prove add_commutative
-```
-add(a,b) = match a {
-    Z => b,
-    S(a_m) => S(add(a_m, b)) == add(b,a) = match b{
-        Z => a,
-        S(b_m) => S(add(b_m, a))
+#[define]
+#[recursive]
+fn sub(x: Nat, y: Nat) -> Nat {
+    match x {
+        Z => Z,
+        S(x_min) => match y {
+            Z => x,
+            S(y_min) => sub(x_min, y_min),
+        }
     }
 }
 ```
-It dives into match statements and compare the final ouput. In this casewe want to prove `S(add(a_m, b)) == S(add(b_m, a))` after unrolling. While it is relatively simple to follow match statements in this case, if we are trying to prove more complex cases, it's quite annoying.
+
+What Ravencheck does for inductive verification is to unroll them by the definitions, and compare them. For TIP #9 that we want to prove here, Ravencheck does like below.
+```
+∀(i,j,k).
+
+let i_j = match i {
+    Z => Z,
+    S(i_min) => match j {
+        Z => i,
+        S(j_min) => sub(i_min, j_min),
+    }
+};
+
+let left = match i_j {
+    Z => Z,
+    S(i_j_min) => match k {
+        Z => i_j,
+        S(k_min) => sub(i_j_min, k_min),
+    }
+};
+
+let j_k = match j {
+    Z => k,
+    S(j_min) => S(add(j_min, k)),
+};
+
+let right = match i {
+    Z => Z,
+    S(i_min) => match j_k {
+        Z => i,
+        S(j_k_min) => sub(i_min, j_k_min),
+    }
+};
+
+left == right
+```
+
+What I'm expecting is like below
+```
+sub(sub(i, j), k) == sub(i, add(j, k))
+
+For case S(i_m) = i, S(j_m) = j, S(k_m) = k, the property would be
+
+sub(sub(S(i_m), S(j_m)), S(k_m)) == sub(S(i_m), add(S(j_m), S(k_m)))
+```
+To find missing instantiations and follow the proof steps of Ravencheck, I need to unroll all the terms, and it's not that intuitive. I think starting from `sub(sub(S(i_m), S(j_m)), S(k_m)) == sub(S(i_m), add(S(j_m), S(k_m)))` matches better with some kind of high-level view.
 
 
 ## Future directions
