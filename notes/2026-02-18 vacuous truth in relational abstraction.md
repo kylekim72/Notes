@@ -124,14 +124,37 @@ In SMT level, Ravencheck asks to CVC5 like below
 (check-sat)
 ```
 
-Let's say we want to check whether `add_z_right()` is evaluated as false or true. Then, in SMT level, we can ask like below
+Let's say we want to check whether `add_move_s()` is instantiated. The SMT expression of `add_move_s()` is at above, and it's infix notation is
+```
+Infix notation: (∀ x_a: Nat, x_b: Nat. (∀ xn_14: Nat. (∀ xn_15: Nat. (∀ xn_16: Nat. (∀ xn_17: Nat. ((((xn_15 == xn_17 || !S(x_a) == xn_14) || !add(xn_14, x_b) == xn_15) || !S(x_b) == xn_16) || !add(x_a, xn_16) == xn_17))))))
+```
+To ask to the solver whether this axiom is instantiated or not, we can ask negation of it's antecedent. It would look like below
+
 ```
 (push 1)
-(assert (exists ((x_a UI_Nat) (xn_7 UI_Nat)) (F_add____ x_a F_Nat__Z____ xn_7)))
+(assert 
+    (exists ((x_a UI_Nat) (x_b UI_Nat) (xn_14 UI_Nat) (xn_15 UI_Nat) (xn_16 UI_Nat) (xn_17 UI_Nat)) 
+        (and 
+            ;; 1. xn_14 = S(x_a)?
+            (F_Nat__S____ x_a xn_14)
+            
+            ;; 2. Is add(S(x_a), x_b) instantiated?
+            (F_add____ xn_14 x_b xn_15)
+            
+            ;; 3. xn_16 = S(x_b)?
+            (F_Nat__S____ x_b xn_16)
+            
+            ;; 4. Is add(x_a, S(x_b)) instantiated?
+            (F_add____ x_a xn_16 xn_17)
+        )
+    )
+)
 (check-sat)
 (pop 1)
 ```
 `(push 1)` and `(pop 1)` are the commands to check the condition between those with previous settings. Withoout these commands, the assertion will remain in the context and it might disturb checking other conditions. If the code above outputs SAT, it means this axiom is ready to use during the proof.
+
+If it outputs UNSAT, then we can divide those terms tied with conjunctions into seperate terms, and ask to the solver in a same way so we can check exactly which term yileds instantiation problem.
 
 ## Some thoughts
 
@@ -147,3 +170,18 @@ fn add_z_right() -> bool {
 
 If this axiom is only instantiated for `a`, we can't conclude `add(b, Z) == b`. If an user wants to use the fact `add(b, Z) == b`, the user needs to instantiate `add_z_right()` on b.
 
+Another thing that might be helpful is to show the whole match statements of Ravencheck's during inductive verification. For example, if we are trying to prove `add_commutative()`, what Ravencheck does is unrolling the `add` one step like below, and trying to applying lemmas.
+
+```
+add(a,b) = match a{
+    Nat::Z => b == add(b,a) = match b{
+                        Nat::Z => a,
+                        Nat::S(b_m) => Nat::S(add(b_m, a))
+    },
+    Nat::S(a_m) => Nat::S(add(a_m), b) == add(b, a) = match b{
+                                    Nat::Z => a,
+                                    Nat::S(b_m) => Nat::S(add(b_m, a))
+    }
+}
+```
+Since applying lemmas are done from solver's side, we can't see the next proof steps. Maybe we can implement some simulator for applying lemmas and figure out what terms are missed?
