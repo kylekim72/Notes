@@ -184,4 +184,4 @@ add(a,b) = match a{
     }
 }
 ```
-Since applying lemmas are done from solver's side, we can't see the next proof steps. Maybe we can implement some simulator for applying lemmas and figure out what terms are missed?
+Since applying lemmas are done from solver's side, we can't see the next proof steps. 
