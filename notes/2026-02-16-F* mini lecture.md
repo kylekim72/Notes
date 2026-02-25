@@ -71,6 +71,9 @@ Body of the `concat` function. First, F* checks the termination of concat functi
 In this case, match statement returns l2 and F* try to check `length l2 == length Nil + length l2`. Since length Nil == 0, we conclude this is true.
 
 2. Inductive case(l1 == x::xs)
+In this case. match statement returns `x::(concat  xs l2)`. Since we've checked that `concat` is guranteed to terminate, we can describe `(concat  xs l2)` with the refinement type. Let `l'` be the return value of `(concat  xs l2)`, then `length l' == length xs + length l2` and this is our Inductive Hypothesis(IH).
+
+In this branch, the return value of `concat` is `x::(concat  xs l2)` == `x::l'`. Thus, we need to prove `length(x::l') == length(x::xs) + length l2`. For LHS, `length(x::l')` can be reduced to `1 + length l'` by the definition of length. We know `length l' == length xs + length l2`, so LHS would be `1 + length xs + length l2`. For RHS, `length(x::xs)` can be reduced to `1 + length xs` by the definition of length. Now F* can conclude that LHS == RHS. We call this way of proof as intrinsic.
 
 
 
